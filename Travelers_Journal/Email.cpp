@@ -17,6 +17,17 @@ Email::Email(const MyString& user, const MyString& host, const MyString& adress)
 	setAdress(adress);
 }
 
+Email& Email::operator=(const Email& email)
+{
+	if (this != &email)
+	{
+		setUser(email.getUser());
+		setHost(email.getHost());
+		setAdress(email.getAdress());
+	}
+	return *this;
+}
+
 const MyString& Email::getUser() const
 {
 	return user;
@@ -116,7 +127,7 @@ std::istream& operator>>(std::istream& ifs, Email& email)
 	email.setAdress(buff3);
 	return ifs;
 }
-std::ofstream& operator<<(std::ofstream& ofs, Email& email)
+std::ostream& operator<<(std::ostream& ofs, Email& email)
 {
 	ofs << email.getAdress() << '@' << email.getHost() << '.' << email.getAdress() << '\n';
 	return ofs;

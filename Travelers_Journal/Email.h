@@ -18,6 +18,8 @@ public:
 	Email(const char*, const char*, const char*);
 	Email(const MyString&, const MyString&, const MyString&);
 
+	Email& operator=(const Email&);
+
 	const MyString& getUser() const;
 	const MyString& getHost() const;
 	const MyString& getAdress() const;

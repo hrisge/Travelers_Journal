@@ -1,62 +1,27 @@
 #include "User.h"
 
-void User::free()
-{
-	delete[] username;
-	delete[] password;
-}
-
-void User::copyFrom(const User& user)
-{
-	email = user.getEmail();
-	setUsername(user.getUsername());
-	setPassword(user.getPassword());
-}
-
-const char* User::getPassword() const
+const MyString& User::getPassword() const
 {
 	return password;
 }
-
 void User::setPassword(const char* password)
 {
-	delete[] this->password;
-	this->password = new char[strlen(password) + 1];
-	strcpy(this->password, password);
+	this->password = password;
 }
-
-User::User() : email()
+void User::setPasword(const MyString& password)
 {
-	username = nullptr;
-	password = nullptr;
+	this->password = password;
 }
 
-User::User(const User& user)
+User::User() : email(), username(), password()
 {
-	copyFrom(user);
+
 }
 
-User::~User()
-{
-	free();
-}
-
-User& User::operator=(const User& user)
-{
-	if (this != &user)
-	{
-		free();
-		copyFrom(user);
-	}
-
-	return *this;
-}
-
-const char* User::getUsername() const
+const MyString& User::getUsername() const
 {
 	return username;
 }
-
 const Email& User::getEmail() const
 {
 	return email;
@@ -64,7 +29,33 @@ const Email& User::getEmail() const
 
 void User::setUsername(const char* username)
 {
-	delete[] this->username;
-	this->username = new char[strlen(username) + 1];
-	strcpy(this->username, username);
+	if (isNameValid(username))
+		this->username = username;
+	else
+		std::cout << "Username does not contain the proper symbols! \n";
 }
+void User::setUsername(const MyString& username)
+{
+	if (isNameValid(username))
+		this->username = username;
+	else
+		std::cout << "Username does not contain the proper symbols! \n";
+}
+
+void User::setEmail(const Email& email)
+{
+	this->email = email;
+}
+void User::setEmail(const MyString& user, const MyString& host, const MyString& adress)
+{
+	email.setUser(user);
+	email.setHost(host);
+	email.setAdress(adress);
+}
+void User::setEmail(const char* user, const char* host, const char* adress)
+{
+	email.setUser(user);
+	email.setHost(host);
+	email.setAdress(adress);
+}
+
