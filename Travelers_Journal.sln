@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32407.337
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Travelers_Journal", "Travelers_Journal\Travelers_Journal.vcxproj", "{50D00EF2-9BA8-427A-A0BC-3ADCFC544032}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50D00EF2-9BA8-427A-A0BC-3ADCFC544032}.Debug|x64.ActiveCfg = Debug|x64
+		{50D00EF2-9BA8-427A-A0BC-3ADCFC544032}.Debug|x64.Build.0 = Debug|x64
+		{50D00EF2-9BA8-427A-A0BC-3ADCFC544032}.Debug|x86.ActiveCfg = Debug|Win32
+		{50D00EF2-9BA8-427A-A0BC-3ADCFC544032}.Debug|x86.Build.0 = Debug|Win32
+		{50D00EF2-9BA8-427A-A0BC-3ADCFC544032}.Release|x64.ActiveCfg = Release|x64
+		{50D00EF2-9BA8-427A-A0BC-3ADCFC544032}.Release|x64.Build.0 = Release|x64
+		{50D00EF2-9BA8-427A-A0BC-3ADCFC544032}.Release|x86.ActiveCfg = Release|Win32
+		{50D00EF2-9BA8-427A-A0BC-3ADCFC544032}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2DF244DE-BAB6-43A4-AC3C-4A4850726749}
+	EndGlobalSection
+EndGlobal
