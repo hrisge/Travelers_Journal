@@ -27,6 +27,18 @@
     <ClCompile Include="MyString.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UsersDataBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CalendarTime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrayOfStrings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="User.h">
@@ -36,6 +48,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MyString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UsersDataBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CalendarTime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrayOfStrings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

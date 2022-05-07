@@ -139,15 +139,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ArrayOfStrings.cpp" />
+    <ClCompile Include="CalendarTime.cpp" />
+    <ClCompile Include="Data.cpp" />
     <ClCompile Include="Email.cpp" />
     <ClCompile Include="MyString.cpp" />
     <ClCompile Include="Travelers_Journal.cpp" />
     <ClCompile Include="User.cpp" />
+    <ClCompile Include="UsersDataBase.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArrayOfStrings.h" />
+    <ClInclude Include="CalendarTime.h" />
+    <ClInclude Include="Data.h" />
     <ClInclude Include="Email.h" />
     <ClInclude Include="MyString.h" />
     <ClInclude Include="User.h" />
+    <ClInclude Include="UsersDataBase.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

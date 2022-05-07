@@ -13,10 +13,6 @@ void User::setPasword(const MyString& password)
 	this->password = password;
 }
 
-User::User() : email(), username(), password()
-{
-
-}
 
 const MyString& User::getUsername() const
 {
