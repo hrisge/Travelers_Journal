@@ -36,6 +36,7 @@ public:
 	void copyString(const char*, size_t);
 
 	void concat(const MyString&);
+	void concatChar(const char);
 
 	char operator[](size_t) const;
 	bool operator==(const MyString&) const;

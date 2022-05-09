@@ -8,7 +8,7 @@ void UsersDataBase::free()
 }
 void UsersDataBase::copyFrom(const UsersDataBase& dataBase)
 {
-	this->dataBase = new MyString[dataBase.getCapacity()];
+	this->dataBase = new Data[dataBase.getCapacity()];
 	this->capacity = dataBase.getCapacity();
 
 	for (size_t i = 0; i < dataBase.getSize(); ++i)
@@ -20,7 +20,7 @@ void UsersDataBase::copyFrom(const UsersDataBase& dataBase)
 
 UsersDataBase::UsersDataBase()
 {
-	dataBase = new MyString[START_CAPACITY];
+	dataBase = new Data[START_CAPACITY];
 	capacity = START_CAPACITY;
 	size = 0;
 }
@@ -34,7 +34,9 @@ UsersDataBase::UsersDataBase(UsersDataBase&& userDataBase)
 	capacity = userDataBase.capacity;
 	size = userDataBase.size;
 
-	userDataBase.free();
+	userDataBase.dataBase = nullptr;
+	userDataBase.capacity = 0;
+	userDataBase.size = 0;
 }
 UsersDataBase::~UsersDataBase()
 {
@@ -58,12 +60,14 @@ UsersDataBase& UsersDataBase::operator=(UsersDataBase&& userDataBase)
 		capacity = userDataBase.capacity;
 		size = userDataBase.size;
 
-		userDataBase.free();
+		userDataBase.dataBase = nullptr;
+		userDataBase.capacity = 0;
+		userDataBase.size = 0;
 	}
 	return *this;
 }
 
-const MyString* UsersDataBase::getDataBase() const
+const Data* UsersDataBase::getDataBase() const
 {
 	return dataBase;
 }
@@ -76,7 +80,7 @@ size_t UsersDataBase::getSize() const
 	return size;
 }
 
-void UsersDataBase::addData(const MyString& data)
+void UsersDataBase::addData(const Data& data)
 {
 	if (getSize() == getCapacity())
 		resize();
@@ -90,14 +94,14 @@ void UsersDataBase::deleteData(size_t n)
 	for (size_t i = n; i < getSize(); ++i)
 		dataBase[i] = dataBase[i + 1];
 
-	delete& dataBase[getSize()];
+	delete &dataBase[getSize()];
 	--size;
 }
 
 void UsersDataBase::resize()
 {
 	size_t newCapacity = getCapacity() * 2;
-	MyString* newDataBase = new MyString[newCapacity];
+	Data* newDataBase = new Data[newCapacity];
 
 	for (size_t i = 0; i < getSize(); ++i)
 		newDataBase[i] = getDataBase()[i];

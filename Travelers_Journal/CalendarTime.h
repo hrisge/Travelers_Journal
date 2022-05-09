@@ -32,7 +32,7 @@ public:
 
 	bool isLeapYear() const;
 	
-	bool operator<(const CalendarTime&) const;
+	bool operator<=(const CalendarTime&) const;
 
 	friend std::istream& operator>>(std::istream&, CalendarTime&);
 	friend std::ostream& operator<<(std::ostream&, const CalendarTime&);

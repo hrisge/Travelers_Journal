@@ -143,6 +143,7 @@
     <ClCompile Include="CalendarTime.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="Email.cpp" />
+    <ClCompile Include="JournalSystem.cpp" />
     <ClCompile Include="MyString.cpp" />
     <ClCompile Include="Travelers_Journal.cpp" />
     <ClCompile Include="User.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="CalendarTime.h" />
     <ClInclude Include="Data.h" />
     <ClInclude Include="Email.h" />
+    <ClInclude Include="JournalSystem.h" />
     <ClInclude Include="MyString.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="UsersDataBase.h" />

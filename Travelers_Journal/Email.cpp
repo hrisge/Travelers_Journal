@@ -127,7 +127,7 @@ std::istream& operator>>(std::istream& ifs, Email& email)
 	email.setAdress(buff3);
 	return ifs;
 }
-std::ostream& operator<<(std::ostream& ofs, Email& email)
+std::ostream& operator<<(std::ostream& ofs,const Email& email)
 {
 	ofs << email.getAdress() << '@' << email.getHost() << '.' << email.getAdress() << '\n';
 	return ofs;

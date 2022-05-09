@@ -32,8 +32,8 @@ public:
 	void setAdress(const MyString&);
 
 	friend std::istream& operator>>(std::istream&, Email&);
-	friend std::ostream& operator<<(std::ostream&, Email&);
+	friend std::ostream& operator<<(std::ostream&, const Email&);
 };
 
 std::istream& operator>>(std::istream&, Email&);
-std::ostream& operator<<(std::ostream&, Email&);
+std::ostream& operator<<(std::ostream&, const Email&);

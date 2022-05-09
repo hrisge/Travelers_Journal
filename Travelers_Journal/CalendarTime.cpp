@@ -70,7 +70,7 @@ bool CalendarTime::isLeapYear() const
 	return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
 }
 
-bool CalendarTime::operator<(const CalendarTime& calendarTime) const
+bool CalendarTime::operator<=(const CalendarTime& calendarTime) const
 {
 	if (getYear() > calendarTime.getYear())
 		return false;

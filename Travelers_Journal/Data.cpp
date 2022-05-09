@@ -1,27 +1,83 @@
 #include "Data.h"
 
-bool Data::isValidPhotos(const MyString&)
+void Data::convertPhotoListToArrayOfStrings(const char* photosList)
 {
-	return false;
+	size_t photosListLen = strlen(photosList);
+	
+	MyString buff;
+	for (size_t i = 0; i < photosListLen; ++i)
+	{
+		if (photosList[i] == '#')
+		{
+			photos.addString(buff);
+			buff = "";
+			continue;
+		}
+		buff.concatChar(photosList[i]);
+	}
+	photos.addString(buff);
 }
 
-void Data::setTime(const CalendarTime& time)
+size_t Data::numberOfPhotosInList(const char* photosList)
 {
-	this->time = time;
+	size_t photoListLen = strlen(photosList);
+	size_t res = 0;
+	for (size_t i = 0; i < photoListLen; ++i)
+		if (photosList[i] == '#')
+			res++;
+	return res;
 }
 
-void Data::setTime(size_t day, size_t month, size_t year)
+bool Data::isValidPhoto(const MyString& photo)
 {
-	time.setYear(year);
-	time.setMonth(month);
-	time.setDay(day);
+	bool dot = false;
+	size_t len = photo.getStringLen();
+	MyString buff;
+
+	for (size_t i = 0; i < len; ++i)
+	{
+		if (photo[i] == '.')
+			dot = true;
+		else if (dot)
+			buff.concatChar(photo.getChar(i));
+	}
+	return (buff == "jpeg") || (buff == "png");
+}
+
+void Data::setTimeDep(const CalendarTime& time)
+{
+	if (getTimeArrival() <= time)
+		timeDeparture = time;
+}
+void Data::setTimeDep(size_t day, size_t month, size_t year)
+{
+	CalendarTime buff(day, month, year);
+	if (getTimeArrival() <= buff)
+		timeDeparture = buff;
+}
+void Data::setTimeArr(const CalendarTime& time)
+{
+	if (time <= getTimeDeparture())
+		timeArival = time;
+}
+void Data::setTimeArr(size_t day, size_t month, size_t year)
+{
+	CalendarTime buff(day, month, year);
+	if (buff <= getTimeDeparture())
+		timeArival = buff;
 }
 
 void Data::setPhotos(const ArrayOfStrings& photos)
 {
 	for (size_t i = 0; i < photos.getSize(); ++i)
-		if (isValidPhotos(photos.getArray()[i]))
+		if (isValidPhoto(photos.getArray()[i]))
 			this->photos.addString(photos.getArray()[i]);
+}
+
+void Data::setPhotosFromList(const char* photosList)
+{
+	
+
 }
 
 void Data::setDestination(const MyString& destination)
@@ -50,4 +106,45 @@ void Data::setGrade(size_t grade)
 		this->grade = grade;
 	else
 		this->grade = 0;
+}
+
+const CalendarTime& Data::getTimeArrival() const
+{
+	return timeArival;
+}
+
+const CalendarTime& Data::getTimeDeparture() const
+{
+	return timeDeparture;
+}
+
+const ArrayOfStrings& Data::getPhotos() const
+{
+	return photos;
+}
+
+const MyString& Data::getDestination() const
+{
+	return destination;
+}
+
+const MyString& Data::getComment() const
+{
+	return comment;
+}
+
+size_t Data::getGrade() const
+{
+	return grade;
+}
+
+void Data::addComment(const MyString& comment)
+{
+	this->comment.concat(comment);
+}
+
+void Data::addPhoto(const MyString& photo)
+{
+	if (isValidPhoto(photo))
+		photos.addString(photo);
 }

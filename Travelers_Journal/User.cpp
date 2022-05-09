@@ -23,6 +23,11 @@ const Email& User::getEmail() const
 	return email;
 }
 
+const UsersDataBase& User::getUsersDataBase() const
+{
+	return usersDataBase;
+}
+
 void User::setUsername(const char* username)
 {
 	if (isNameValid(username))
@@ -53,5 +58,10 @@ void User::setEmail(const char* user, const char* host, const char* adress)
 	email.setUser(user);
 	email.setHost(host);
 	email.setAdress(adress);
+}
+
+void User::addData(const Data& data)
+{
+	usersDataBase.addData(data);
 }
 

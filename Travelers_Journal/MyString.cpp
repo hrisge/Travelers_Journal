@@ -154,6 +154,15 @@ void MyString::concat(const MyString& myString)
 		str[i] = myString[i - len1];
 }
 
+void MyString::concatChar(const char ch)
+{
+	size_t len = getStringLen();
+	if (len == getCapacity())
+		resize();
+	str[len] = ch;
+	str[len + 1] = '\0';
+}
+
 char MyString::operator[](size_t k) const
 {
 	return getChar(k);
