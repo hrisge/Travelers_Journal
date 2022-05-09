@@ -145,6 +145,7 @@
     <ClCompile Include="Email.cpp" />
     <ClCompile Include="JournalSystem.cpp" />
     <ClCompile Include="MyString.cpp" />
+    <ClCompile Include="System.cpp" />
     <ClCompile Include="Travelers_Journal.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="UsersDataBase.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="Email.h" />
     <ClInclude Include="JournalSystem.h" />
     <ClInclude Include="MyString.h" />
+    <ClInclude Include="System.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="UsersDataBase.h" />
   </ItemGroup>

@@ -192,8 +192,8 @@ bool MyString::operator!=(const MyString& myString) const
 std::istream& operator>>(std::istream& ifs, MyString& myString)
 {
 	myString.free();
-	char buff[1024];
-	ifs >> buff;
+	char buff[MAX_BUFF3];
+	ifs.getline(buff, MAX_BUFF3);
 
 	myString.copyFrom(buff);
 	return ifs;

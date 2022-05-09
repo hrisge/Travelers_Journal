@@ -39,7 +39,35 @@ void JournalSystem::loadUsersData()
 		inputFile.close();
 	}
 }
+void JournalSystem::saveUsersData(size_t index)
+{
+	MyString ext = ".db";
+	MyString fileName = getUsers()[index].getUsername();
+	fileName.concat(ext);
 
+	std::ofstream outputFile(fileName.getString(), std::ios::out || std::ios::trunc);
+
+	if (!outputFile.is_open())
+		return;
+
+	for (size_t i = 0; i < getUsers()[index].getUsersDataBase().getSize(); ++i)
+	{
+		outputFile << getUsers()[index].getUsersDataBase().getDataBase()[i].getDestination() << '$' <<
+			getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getYear() << '-' <<
+			getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getMonth() << '-' <<
+			getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getDay() << ' ' <<
+			getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getYear() << '-' <<
+			getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getMonth() << '-' <<
+			getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getDay() << '$' <<
+			getUsers()[index].getUsersDataBase().getDataBase()[i].getGrade() <<
+			getUsers()[index].getUsersDataBase().getDataBase()[i].getComment() << '$';
+		for (size_t k = 0; k <= getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getSize()-1; ++k)
+		{
+			outputFile << getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getArray()[k].getString()<<'#';
+		}
+		outputFile << getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getArray()[k].getString() << '\n';
+	}
+}
 void JournalSystem::addUserData(std::ifstream& inputFile, size_t index)
 {
 	char buffDest[MAX_BUFF_SIZE];
@@ -64,7 +92,7 @@ void JournalSystem::addUserData(std::ifstream& inputFile, size_t index)
 
 	inputFile.getline(buffYear2, MAX_NUMBER_LEN, '-');
 	inputFile.getline(buffMonth2, MAX_NUMBER_LEN, '-');
-	inputFile.getline(buffDay, MAX_NUMBER_LEN, '$');
+	inputFile.getline(buffDay2, MAX_NUMBER_LEN, '$');
 
 	inputFile.getline(buffGrade, MAX_NUMBER_LEN, '$');
 	inputFile.getline(buffComment, MAX_BUFF3, '$');
@@ -129,14 +157,12 @@ JournalSystem::JournalSystem()
 		++size;
 	}
 
-
+	inputFile.close();
 }
-
 JournalSystem::JournalSystem(const JournalSystem& journalSystem)
 {
 	copyFrom(journalSystem);
 }
-
 JournalSystem::JournalSystem(JournalSystem&& journalSystem)
 {
 	users = journalSystem.users;
@@ -151,7 +177,6 @@ JournalSystem::JournalSystem(JournalSystem&& journalSystem)
 	journalSystem.loggedIn = 0;
 	journalSystem.isLoggedIn = false;
 }
-
 JournalSystem::~JournalSystem()
 {
 	free();
@@ -161,22 +186,18 @@ const User* JournalSystem::getUsers() const
 {
 	return users;
 }
-
 size_t JournalSystem::getSize() const
 {
 	return size;
 }
-
 size_t JournalSystem::getCapacity() const
 {
 	return capacity;
 }
-
 size_t JournalSystem::getLoggedIn() const
 {
 	return loggedIn;
 }
-
 bool JournalSystem::getIsLoggedIn() const
 {
 	return isLoggedIn;
@@ -190,7 +211,6 @@ void JournalSystem::addUser(const User& user)
 	users[getSize()] = user;
 	++size;
 }
-
 void JournalSystem::save()
 {
 	std::ofstream outFile(usersFile, std::ios::trunc);
@@ -199,7 +219,61 @@ void JournalSystem::save()
 		return;
 
 	for (size_t i = 0; i < getSize(); ++i)
+	{
 		outFile << getUsers()[i].getUsername() << '$' << getUsers()[i].getPassword() << '$' << getUsers()[i].getEmail();
-
+		saveUsersData(i);
+	}
 	outFile.close();
+}
+
+void JournalSystem::addAJourney(const MyString& destination, const CalendarTime& arrTime, const CalendarTime& depTime, 
+	size_t grade, const MyString& comment, const ArrayOfStrings& photos)
+{
+	Data buff;
+	buff.setDestination(destination);
+	buff.setTimeArr(arrTime);
+	buff.setTimeDep(depTime);
+	buff.setGrade(grade);
+	buff.setComment(comment);
+	buff.setPhotos(photos);
+
+	users[getLoggedIn()].addData(buff);
+}
+
+void JournalSystem::logOut()
+{
+	loggedIn = 0;
+	isLoggedIn = 0;
+}
+
+
+bool JournalSystem::checkLogIn(MyString& username, MyString& password)
+{
+	for (size_t i = 0; i < getSize(); i++)
+	{
+		if (getUsers()[i].getUsername() == username)
+		{
+			if (getUsers()[i].getPassword() == password)
+			{
+				isLoggedIn = true;
+				loggedIn = i;
+
+				return true;
+			}
+
+		}
+	}
+	return false;
+}
+
+bool JournalSystem::checkUser(MyString& username)
+{
+	return false;
+
+	for (size_t i = 0; i < getSize(); i++)
+		if (getUsers()[i].getUsername() == username)
+			return false;
+
+
+	return true;
 }

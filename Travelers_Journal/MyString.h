@@ -2,7 +2,8 @@
 #include <iostream>
 #include <fstream>
 
-const size_t MAX_BUFF_SIZE = 1024;
+const size_t MAX_BUFF3 = 10000;
+
 class MyString
 {
 	size_t capacity = 0;

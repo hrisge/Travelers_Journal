@@ -5,7 +5,6 @@
 const char usersFile[16] = "usersList.db";
 const size_t MAX_BUFF_SIZE = 128;
 const size_t MAX_BUFF2 = 8;
-const size_t MAX_BUFF3 = 10000;
 
 class JournalSystem
 {
@@ -19,6 +18,7 @@ class JournalSystem
 	void free();
 	void copyFrom(const JournalSystem&);
 	void loadUsersData();
+	void saveUsersData(size_t);
 	void addUserData(std::ifstream&, size_t);
 	void resize();
 
@@ -36,8 +36,11 @@ public:
 
 	void addUser(const User&);
 	void save();
+	void addAJourney(const MyString&, const CalendarTime&, const CalendarTime&, size_t, const MyString&, const ArrayOfStrings&);
+	void logOut();
 
-
+	bool checkLogIn(MyString&, MyString&);
+	bool checkUser(MyString&);
 
 
 };

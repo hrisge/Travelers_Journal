@@ -76,8 +76,7 @@ void Data::setPhotos(const ArrayOfStrings& photos)
 
 void Data::setPhotosFromList(const char* photosList)
 {
-	
-
+	convertPhotoListToArrayOfStrings(photosList);
 }
 
 void Data::setDestination(const MyString& destination)
