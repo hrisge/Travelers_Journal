@@ -11,5 +11,3 @@ void viewDestinationAverageGrade(JournalSystem&);
 void exit(JournalSystem&);
 void logOut(JournalSystem&);
 void help(JournalSystem&);
-
-void enteringPassword(MyString&);

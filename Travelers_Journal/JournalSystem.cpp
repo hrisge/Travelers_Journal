@@ -45,7 +45,7 @@ void JournalSystem::saveUsersData(size_t index)
 	MyString fileName = getUsers()[index].getUsername();
 	fileName.concat(ext);
 
-	std::ofstream outputFile(fileName.getString(), std::ios::out || std::ios::trunc);
+	std::ofstream outputFile(fileName.getString(), std::ios::out | std::ios::trunc);
 
 	if (!outputFile.is_open())
 		return;
@@ -61,11 +61,11 @@ void JournalSystem::saveUsersData(size_t index)
 			getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getDay() << '$' <<
 			getUsers()[index].getUsersDataBase().getDataBase()[i].getGrade() <<
 			getUsers()[index].getUsersDataBase().getDataBase()[i].getComment() << '$';
-		for (size_t k = 0; k <= getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getSize()-1; ++k)
+		for (size_t k = 0; k <= (int)getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getSize()-1; ++k)
 		{
 			outputFile << getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getArray()[k].getString()<<'#';
 		}
-		outputFile << getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getArray()[k].getString() << '\n';
+		outputFile << getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getArray()[getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getSize() - 1].getString() << '\n';
 	}
 }
 void JournalSystem::addUserData(std::ifstream& inputFile, size_t index)
@@ -113,6 +113,8 @@ void JournalSystem::addUserData(std::ifstream& inputFile, size_t index)
 void JournalSystem::resize()
 {
 	capacity *= 2;
+	if (capacity == 0)
+		capacity = 4;
 	User* buff = new User[getCapacity()];
 	for (size_t i = 0; i < getSize(); ++i)
 		buff[i] = users[i];
@@ -268,12 +270,9 @@ bool JournalSystem::checkLogIn(MyString& username, MyString& password)
 
 bool JournalSystem::checkUser(MyString& username)
 {
-	return false;
-
 	for (size_t i = 0; i < getSize(); i++)
 		if (getUsers()[i].getUsername() == username)
 			return false;
-
 
 	return true;
 }

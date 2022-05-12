@@ -18,6 +18,9 @@ void ArrayOfStrings::copyFrom(const ArrayOfStrings& arr)
 void ArrayOfStrings::resize()
 {
 	capacity *= 2;
+	if (getCapacity() == 0)
+		capacity = 8;
+
 	MyString* buff = new MyString[getCapacity()];
 	for (size_t i = 0; i < getSize(); ++i)
 		buff[i] = getArray()[i];

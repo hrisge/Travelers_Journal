@@ -84,7 +84,7 @@ bool isNameValid(const char* str)
 	size_t len = strlen(str);
 	for (size_t i = 0; i < len; i++)
 	{
-		if (!((str[i] > 'a' && str[i] < 'z') || (str[i] > 'A' && str[i] < 'Z') || (str[i] > '0' && str[i] < '9')))
+		if (!((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z') || (str[i] >= '0' && str[i] <= '9')))
 			return false;
 	}
 	return true;
@@ -94,7 +94,7 @@ bool isNameValid(const MyString& str)
 	size_t len = str.getStringLen();
 	for (size_t i = 0; i < len; i++)
 	{
-		if (!((str[i] > 'a' && str[i] < 'z') || (str[i] > 'A' && str[i] < 'Z') || (str[i] > '0' && str[i] < '9')))
+		if (!((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z') || (str[i] >= '0' && str[i] <= '9')))
 			return false;
 	}
 	return true;
@@ -102,25 +102,25 @@ bool isNameValid(const MyString& str)
 
 std::istream& operator>>(std::istream& ifs, Email& email)
 {
-	char buff1[MAX_BUFF_SIZE];
+	char buff1[MAX_BUFF3];
 
-	ifs.getline(buff1, MAX_BUFF_SIZE, '@');
+	ifs.getline(buff1, MAX_BUFF3, '@');
 	if (!isNameValid(buff1))
 		return ifs;
 	
 	email.setUser(buff1);
 
-	char buff2[MAX_BUFF_SIZE];
+	char buff2[MAX_BUFF3];
 
-	ifs.getline(buff2, MAX_BUFF_SIZE, '.');
+	ifs.getline(buff2, MAX_BUFF3, '.');
 	if (!isNameValid(buff2))
 		return ifs;
 
 	email.setHost(buff2);
 
-	char buff3[MAX_BUFF_SIZE];
+	char buff3[MAX_BUFF3];
 
-	ifs.getline(buff3, MAX_BUFF_SIZE);
+	ifs.getline(buff3, MAX_BUFF3);
 	if (!isNameValid(buff3))
 		return ifs;
 
@@ -129,7 +129,7 @@ std::istream& operator>>(std::istream& ifs, Email& email)
 }
 std::ostream& operator<<(std::ostream& ofs,const Email& email)
 {
-	ofs << email.getAdress() << '@' << email.getHost() << '.' << email.getAdress() << '\n';
+	ofs << email.getUser() << '@' << email.getHost() << '.' << email.getAdress() << '\n';
 	return ofs;
 }
 

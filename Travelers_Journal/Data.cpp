@@ -57,8 +57,7 @@ void Data::setTimeDep(size_t day, size_t month, size_t year)
 }
 void Data::setTimeArr(const CalendarTime& time)
 {
-	if (time <= getTimeDeparture())
-		timeArival = time;
+	timeArival = time;
 }
 void Data::setTimeArr(size_t day, size_t month, size_t year)
 {

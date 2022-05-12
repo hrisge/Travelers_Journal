@@ -10,10 +10,9 @@ class User
 	MyString username;
 	MyString password;
 
-	
-
-
 public:
+	User& operator=(const User&);
+
 	const MyString& getPassword() const;
 	const MyString& getUsername() const;
 	const Email& getEmail() const;

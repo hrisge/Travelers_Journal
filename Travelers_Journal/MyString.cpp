@@ -23,12 +23,15 @@ void MyString::copyFrom(const char* myString)
 void MyString::resize()
 {
 	size_t newCapacity = 2 * getCapacity();
+	if (newCapacity == 0)
+		newCapacity = 3;
+
 	char* buff = new char[newCapacity];
 	for (size_t i = 0; i < getCapacity(); ++i)
 		buff[i] = getString()[i];
 	buff[getCapacity()] = '\0';
 
-	free();
+	delete[] str;
 	str = buff;
 	capacity = newCapacity;
 }
@@ -62,8 +65,14 @@ MyString& MyString::operator=(const MyString& myString)
 {
 	if (this != &myString)
 	{
-		free();
-		copyFrom(myString);
+		if (getString() == nullptr)
+			copyFrom(myString);
+		else
+		{
+			free();
+			copyFrom(myString);
+		}
+
 	}
 	return *this;
 }
@@ -107,6 +116,9 @@ const size_t MyString::getCapacity() const
 
 size_t MyString::getStringLen() const
 {
+	if (getString() == nullptr)
+		return 0;
+
 	size_t cnt = 0;
 	bool endOfStr = false;
 	while (!endOfStr)
@@ -122,7 +134,7 @@ const char MyString::getChar(size_t k) const
 }
 void MyString::copyString(const MyString& other, size_t numberOfChars)
 {
-	if (numberOfChars >= getCapacity())
+	while((int)numberOfChars >= ((int)getCapacity() - 1))
 		resize();
 
 	size_t cnt = numberOfChars - 1;
@@ -132,7 +144,7 @@ void MyString::copyString(const MyString& other, size_t numberOfChars)
 }
 void MyString::copyString(const char* str, size_t numberOfChars)
 {
-	if (numberOfChars >= getCapacity())
+	if ((int)numberOfChars >= ((int)getCapacity()-1))
 		resize();
 
 	size_t cnt = numberOfChars - 1;
@@ -147,17 +159,18 @@ void MyString::concat(const MyString& myString)
 	size_t len2 = myString.getStringLen() + len1;
 
 	
-	if (len1 + len2 > getCapacity())
+	while (len1 + len2 > getCapacity())
 		resize();
 
 	for (size_t i = len1; i < len2; ++i)
 		str[i] = myString[i - len1];
+	str[len2] = '\0';
 }
 
 void MyString::concatChar(const char ch)
 {
-	size_t len = getStringLen();
-	if (len == getCapacity())
+	int len = getStringLen();
+	if (len >= ((int)getCapacity()-1))
 		resize();
 	str[len] = ch;
 	str[len + 1] = '\0';
@@ -181,6 +194,7 @@ bool MyString::operator==(const MyString& myString) const
 		if (getChar(i) != myString[i])
 			return false;
 	}
+	return true;
 }
 
 bool MyString::operator!=(const MyString& myString) const

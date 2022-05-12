@@ -101,6 +101,9 @@ void UsersDataBase::deleteData(size_t n)
 void UsersDataBase::resize()
 {
 	size_t newCapacity = getCapacity() * 2;
+	if (newCapacity == 0)
+		newCapacity = 8;
+
 	Data* newDataBase = new Data[newCapacity];
 
 	for (size_t i = 0; i < getSize(); ++i)

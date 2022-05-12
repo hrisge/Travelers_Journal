@@ -3,6 +3,7 @@
 #include <fstream>
 
 const size_t MAX_BUFF3 = 10000;
+const size_t INITIAL_CAPACITY = 4;
 
 class MyString
 {

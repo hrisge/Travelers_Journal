@@ -1,5 +1,17 @@
 #include "User.h"
 
+User& User::operator=(const User& user)
+{
+	if (this != &user)
+	{
+		email = user.getEmail();
+		usersDataBase = user.getUsersDataBase();
+		username = user.getUsername();
+		password = user.getPassword();
+	}
+	return *this;
+}
+
 const MyString& User::getPassword() const
 {
 	return password;

@@ -4,14 +4,55 @@ void system()
 {
 	JournalSystem journalSystem;
 
-	MyString command;
-	std::cout << "Please enter a command. If you need help enter help. Command: ";
-	std::cin >> command;
+	while (true)
+	{
+		MyString command;
+		std::cout << "Please enter a command. If you need help enter help. Command: ";
+		std::cin >> command;
+		if (command == "log in")
+		{
+			logIn(journalSystem);
+		}
+		else if (command == "register")
+		{
+			registerNewUser(journalSystem);
+		}
+		else if (command == "add a new trip")
+		{
+			addNewTrip(journalSystem);
+		}
+		else if (command == "view trips")
+		{
+			viewTrips(journalSystem);
+		}
+		else if (command == "average grade")
+		{
+			viewDestinationAverageGrade(journalSystem);
+		}
+		else if (command == "log out")
+		{
+			logOut(journalSystem);
+		}
+		else if (command == "exit")
+		{
+			exit(journalSystem);
+			return;
+		}
+		else if (command == "help")
+		{
+			help(journalSystem);
+		}
+		else
+		{
+			std::cout << "You have entered invalid command. Check help!" << std::endl;
+			continue;
+		}
+	}
 }
 
 void logIn(JournalSystem& journalSystem)
 {
-	if (!journalSystem.getIsLoggedIn())
+	if (journalSystem.getIsLoggedIn())
 	{
 		std::cout << "You are already logged in as " << journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsername();
 		return;
@@ -24,7 +65,7 @@ void logIn(JournalSystem& journalSystem)
 	std::cout << "Please enter your username: ";
 	std::cin >> username;
 	std::cout << "Please enter your passsword: ";
-	enteringPassword(password);
+	std::cin >> password;
 	
 	bool logIn = journalSystem.checkLogIn(username, password);
 	if (logIn)
@@ -37,7 +78,7 @@ void logIn(JournalSystem& journalSystem)
 }
 void registerNewUser(JournalSystem& journalSystem)
 {
-	if (!journalSystem.getIsLoggedIn())
+	if (journalSystem.getIsLoggedIn())
 	{
 		std::cout << "You are already logged in as " << journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsername();
 		return;
@@ -51,14 +92,14 @@ void registerNewUser(JournalSystem& journalSystem)
 	std::cout << "Please enter your username: ";
 	std::cin >> username;
 	std::cout << "Please enter your passsword: ";
-	enteringPassword(password);
+	std::cin >> password;
 	std::cout << "\nPlease enter your Email: ";
 	std::cin >> email;
-
+	User buff;
 	bool logIn = journalSystem.checkUser(username);
 	if (logIn)
 	{
-		User buff;
+		
 		buff.setUsername(username);
 		buff.setPasword(password);
 		buff.setEmail(email);
@@ -100,9 +141,11 @@ void addNewTrip(JournalSystem& journalSystem)
 	std::cout << "\nEnter your grade for the journer between 1 and 5 : ";
 	std::cin >> grade;
 	std::cout << "\nEnter your comment about the journey : ";
+	std::cin.ignore();
 	std::cin >> comment;
 	std::cout << "\nEnter the number of photos you would like to attach: ";
 	std::cin >> numberOfPhotos;
+	std::cin.ignore();
 
 	for (size_t i = 0; i < numberOfPhotos; ++i)
 	{
@@ -177,7 +220,6 @@ void exit(JournalSystem& journalSystem)
 {
 	journalSystem.save();
 }
-
 void logOut(JournalSystem& journalSystem)
 {
 	journalSystem.logOut();
@@ -185,6 +227,7 @@ void logOut(JournalSystem& journalSystem)
 
 void help(JournalSystem& journalSystem)
 {
+	system("CLS");
 	if (!journalSystem.getIsLoggedIn())
 		std::cout << "If you want to log in type: log in!" << std::endl << "If you want to register new user type: register!" << std::endl;
 	else
@@ -192,24 +235,7 @@ void help(JournalSystem& journalSystem)
 		std::cout << "If you want to add a new trip: add a new trip!" << std::endl;
 		std::cout << "If you want to view trips: view trips!" << std::endl;
 		std::cout << "If you want to view the average destination grade: average grade!" << std::endl;
+		std::cout << "If you want to log out: log out!" << std::endl;
 		std::cout << "If you want to exit: exit!" << std::endl;
-	}
-}
-
-void enteringPassword(MyString& password)
-{
-	size_t cnt = 0;
-	char ch;
-	while (true)
-	{
-		std::cin >> ch;
-		if (ch == '\n')
-			break;
-		password.concatChar(ch);
-		++cnt;
-		system("CLS");
-		std::cout << "Please enter yout passsword: ";
-		for (size_t i = 0; i < cnt; ++i)
-			std::cout << '*';
 	}
 }
