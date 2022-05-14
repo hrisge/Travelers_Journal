@@ -6,15 +6,14 @@ CalendarTime::CalendarTime()
 	setMonth(0);
 	setDay(0);
 }
-
-CalendarTime::CalendarTime(size_t day, size_t month, size_t year)
+CalendarTime::CalendarTime(unsigned day, unsigned month, unsigned year)
 {
 	setYear(year);
 	setMonth(month);
 	setDay(day);
 }
 
-void CalendarTime::setDay(size_t day)
+void CalendarTime::setDay(unsigned day)
 {
 	if (day > maxDays[month - 1])
 	{
@@ -24,7 +23,7 @@ void CalendarTime::setDay(size_t day)
 	isModified = true;
 	validateDateByChangedCalendars();
 }
-void CalendarTime::setYear(size_t year)
+void CalendarTime::setYear(unsigned year)
 {
 	this->year = year;
 
@@ -35,7 +34,7 @@ void CalendarTime::setYear(size_t year)
 	isModified = true;
 	validateDateByChangedCalendars();
 }
-void CalendarTime::setMonth(size_t month)
+void CalendarTime::setMonth(unsigned month)
 {
 	if (month > 12)
 	{
@@ -50,15 +49,15 @@ void CalendarTime::setMonth(size_t month)
 	validateDateByChangedCalendars();
 }
 
-size_t CalendarTime::getDay() const
+unsigned CalendarTime::getDay() const
 {
 	return day;
 }
-size_t CalendarTime::getMonth() const
+unsigned CalendarTime::getMonth() const
 {
 	return month;
 }
-size_t CalendarTime::getYear() const
+unsigned CalendarTime::getYear() const
 {
 	return year;
 }
@@ -98,11 +97,11 @@ void CalendarTime::validateDateByChangedCalendars()
 		day = 15;
 }
 
-size_t convertCharToInt(const char* number)
+unsigned convertCharToInt(const char* number)
 {
-	size_t res = 0;
+	unsigned res = 0;
 	bool endOfStr = true;
-	size_t cnt = 0;
+	unsigned cnt = 0;
 
 	while (endOfStr)
 	{
@@ -129,7 +128,6 @@ std::istream& operator>>(std::istream& ifs, CalendarTime& calendarTime)
 
 	return ifs;
 }
-
 std::ostream& operator<<(std::ostream& ofs, const CalendarTime& calendarTime)
 {
 	ofs << calendarTime.getDay() << '-' << calendarTime.getMonth() << '-' << calendarTime.getYear();

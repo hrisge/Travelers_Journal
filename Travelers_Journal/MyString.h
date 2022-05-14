@@ -2,12 +2,12 @@
 #include <iostream>
 #include <fstream>
 
-const size_t MAX_BUFF3 = 10000;
-const size_t INITIAL_CAPACITY = 4;
+const unsigned MAX_BUFF3 = 10000;
+const unsigned INITIAL_CAPACITY = 4;
 
 class MyString
 {
-	size_t capacity = 0;
+	unsigned capacity = 0;
 	char* str = nullptr;
 	
 
@@ -32,15 +32,15 @@ public:
 	const char* getString() const;
 	const size_t getCapacity() const;
 
-	size_t getStringLen() const;
-	const char getChar(size_t) const;
-	void copyString(const MyString&, size_t);
-	void copyString(const char*, size_t);
+	unsigned getStringLen() const;
+	const char getChar(unsigned) const;
+	void copyString(const MyString&, unsigned);
+	void copyString(const char*, unsigned);
 
 	void concat(const MyString&);
 	void concatChar(const char);
 
-	char operator[](size_t) const;
+	char operator[](unsigned) const;
 	bool operator==(const MyString&) const;
 	bool operator!=(const MyString&) const;
 

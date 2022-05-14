@@ -11,7 +11,7 @@ void UsersDataBase::copyFrom(const UsersDataBase& dataBase)
 	this->dataBase = new Data[dataBase.getCapacity()];
 	this->capacity = dataBase.getCapacity();
 
-	for (size_t i = 0; i < dataBase.getSize(); ++i)
+	for (unsigned i = 0; i < dataBase.getSize(); ++i)
 	{
 		this->dataBase[i] = dataBase.getDataBase()[i];
 		++size;
@@ -71,11 +71,11 @@ const Data* UsersDataBase::getDataBase() const
 {
 	return dataBase;
 }
-size_t UsersDataBase::getCapacity() const
+unsigned UsersDataBase::getCapacity() const
 {
 	return capacity;
 }
-size_t UsersDataBase::getSize() const
+unsigned UsersDataBase::getSize() const
 {
 	return size;
 }
@@ -88,10 +88,10 @@ void UsersDataBase::addData(const Data& data)
 	dataBase[getSize()] = data;
 	++size;
 }
-void UsersDataBase::deleteData(size_t n)
+void UsersDataBase::deleteData(unsigned n)
 {
 	delete &dataBase[n];
-	for (size_t i = n; i < getSize(); ++i)
+	for (unsigned i = n; i < getSize(); ++i)
 		dataBase[i] = dataBase[i + 1];
 
 	delete &dataBase[getSize()];
@@ -100,13 +100,13 @@ void UsersDataBase::deleteData(size_t n)
 
 void UsersDataBase::resize()
 {
-	size_t newCapacity = getCapacity() * 2;
+	unsigned newCapacity = getCapacity() * 2;
 	if (newCapacity == 0)
 		newCapacity = 8;
 
 	Data* newDataBase = new Data[newCapacity];
 
-	for (size_t i = 0; i < getSize(); ++i)
+	for (unsigned i = 0; i < getSize(); ++i)
 		newDataBase[i] = getDataBase()[i];
 
 	delete[] dataBase;

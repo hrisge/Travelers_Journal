@@ -79,10 +79,10 @@ void Email::setAdress(const MyString& adress)
 	this->adress = adress;
 }
 
-bool isNameValid(const char* str)
+bool isNameValid(const char* str) 
 {
-	size_t len = strlen(str);
-	for (size_t i = 0; i < len; i++)
+	unsigned len = strlen(str);
+	for (unsigned i = 0; i < len; i++)
 	{
 		if (!((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z') || (str[i] >= '0' && str[i] <= '9')))
 			return false;
@@ -91,8 +91,8 @@ bool isNameValid(const char* str)
 }
 bool isNameValid(const MyString& str)
 {
-	size_t len = str.getStringLen();
-	for (size_t i = 0; i < len; i++)
+	unsigned len = str.getStringLen();
+	for (unsigned i = 0; i < len; i++)
 	{
 		if (!((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z') || (str[i] >= '0' && str[i] <= '9')))
 			return false;

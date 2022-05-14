@@ -9,7 +9,7 @@ void ArrayOfStrings::free()
 void ArrayOfStrings::copyFrom(const ArrayOfStrings& arr)
 {
 	array = new MyString[arr.getCapacity()];
-	for (size_t i = 0; i < arr.getSize(); i++)
+	for (unsigned i = 0; i < arr.getSize(); i++)
 		array[i] = arr.getArray()[i];
 	size = arr.getSize();
 	capacity = arr.getCapacity();
@@ -19,10 +19,10 @@ void ArrayOfStrings::resize()
 {
 	capacity *= 2;
 	if (getCapacity() == 0)
-		capacity = 8;
+		capacity = BASE_SIZE;
 
 	MyString* buff = new MyString[getCapacity()];
-	for (size_t i = 0; i < getSize(); ++i)
+	for (unsigned i = 0; i < getSize(); ++i)
 		buff[i] = getArray()[i];
 
 	delete[] array;
@@ -77,32 +77,31 @@ ArrayOfStrings& ArrayOfStrings::operator=(ArrayOfStrings&& arr)
 	return *this;
 }
 
+const MyString& ArrayOfStrings::operator[](unsigned i) const
+{
+	return getArray()[i];
+}
+
 const MyString* ArrayOfStrings::getArray() const
 {
 	return array;
 }
 
-size_t ArrayOfStrings::getCapacity() const
+unsigned ArrayOfStrings::getCapacity() const
 {
 	return capacity;
 }
 
-size_t ArrayOfStrings::getSize() const
+unsigned ArrayOfStrings::getSize() const
 {
 	return size;
 }
 
 void ArrayOfStrings::addString(const MyString& str)
 {
-	if (getCapacity() == 0)
-	{
-		array = new MyString[BASE_SIZE];
-		capacity = BASE_SIZE;
-	}
-	else if (getCapacity() == getSize())
+	if ((getCapacity() == 0) || (getCapacity() == getSize()))
 		resize();
 
 	array[getSize()] = str;
 	++size;
-
 }

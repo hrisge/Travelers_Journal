@@ -22,12 +22,12 @@ void MyString::copyFrom(const char* myString)
 
 void MyString::resize()
 {
-	size_t newCapacity = 2 * getCapacity();
+	unsigned newCapacity = 2 * getCapacity();
 	if (newCapacity == 0)
-		newCapacity = 3;
+		newCapacity = INITIAL_CAPACITY;
 
 	char* buff = new char[newCapacity];
-	for (size_t i = 0; i < getCapacity(); ++i)
+	for (unsigned i = 0; i < getCapacity(); ++i)
 		buff[i] = getString()[i];
 	buff[getCapacity()] = '\0';
 
@@ -72,7 +72,6 @@ MyString& MyString::operator=(const MyString& myString)
 			free();
 			copyFrom(myString);
 		}
-
 	}
 	return *this;
 }
@@ -88,7 +87,6 @@ MyString& MyString::operator=(MyString&& myString)
 	}
 	return *this;
 }
-
 MyString& MyString::operator=(const char* str)
 {
 	if (getString() != str)
@@ -109,17 +107,17 @@ const char* MyString::getString() const
 {
 	return str;
 }
-const size_t MyString::getCapacity() const
+const unsigned MyString::getCapacity() const
 {
 	return capacity;
 }
 
-size_t MyString::getStringLen() const
+unsigned MyString::getStringLen() const
 {
 	if (getString() == nullptr)
 		return 0;
 
-	size_t cnt = 0;
+	unsigned cnt = 0;
 	bool endOfStr = false;
 	while (!endOfStr)
 	{
@@ -128,80 +126,77 @@ size_t MyString::getStringLen() const
 	}
 	return cnt;
 }
-const char MyString::getChar(size_t k) const
+const char MyString::getChar(unsigned k) const
 {
 	return getString()[k];
 }
-void MyString::copyString(const MyString& other, size_t numberOfChars)
+void MyString::copyString(const MyString& other, unsigned numberOfChars)
 {
-	while((int)numberOfChars >= ((int)getCapacity() - 1))
+	while ((numberOfChars >= getCapacity() - 1) || (getCapacity() == 0))
 		resize();
 
-	size_t cnt = numberOfChars - 1;
-	for (size_t i = 0; i < numberOfChars - 1; i++)
+	unsigned cnt = numberOfChars - 1;
+	for (unsigned i = 0; i < numberOfChars - 1; i++)
 		str[i] = other.getString()[i];
 	str[cnt] = '\0';
 }
-void MyString::copyString(const char* str, size_t numberOfChars)
+void MyString::copyString(const char* str, unsigned numberOfChars)
 {
-	if ((int)numberOfChars >= ((int)getCapacity()-1))
+	if ((numberOfChars >= getCapacity() - 1) || (getCapacity() == 0))
 		resize();
 
-	size_t cnt = numberOfChars - 1;
-	for (size_t i = 0; i < numberOfChars - 1; i++)
+	unsigned cnt = numberOfChars - 1;
+	for (unsigned i = 0; i < numberOfChars - 1; i++)
 		this->str[i] = str[i];
 	this->str[cnt] = '\0';
 }
 
 void MyString::concat(const MyString& myString)
 {
-	size_t len1 = getStringLen();
-	size_t len2 = myString.getStringLen() + len1;
+	unsigned len1 = getStringLen();
+	unsigned len2 = myString.getStringLen() + len1;
 
 	
 	while (len1 + len2 > getCapacity())
 		resize();
 
-	for (size_t i = len1; i < len2; ++i)
+	for (unsigned i = len1; i < len2; ++i)
 		str[i] = myString[i - len1];
 	str[len2] = '\0';
 }
-
 void MyString::concatChar(const char ch)
 {
-	int len = getStringLen();
-	if (len >= ((int)getCapacity()-1))
+	unsigned len = getStringLen();
+	if ((len >= getCapacity() - 1) || (getCapacity() == 0))
 		resize();
 	str[len] = ch;
 	str[len + 1] = '\0';
 }
 
-char MyString::operator[](size_t k) const
+char MyString::operator[](unsigned k) const
 {
 	return getChar(k);
 }
 
 bool MyString::operator==(const MyString& myString) const
 {
-	size_t len1 = getStringLen();
-	size_t len2 = myString.getStringLen();
+	unsigned len1 = getStringLen();
+	unsigned len2 = myString.getStringLen();
 
 	if (len1 != len2)
 		return false;
 
-	for (size_t i = 0; i < len1; i++)
+	for (unsigned i = 0; i < len1; i++)
 	{
 		if (getChar(i) != myString[i])
 			return false;
 	}
 	return true;
 }
-
 bool MyString::operator!=(const MyString& myString) const
 {
 	return !(*this == myString);
 }
-
 
 std::istream& operator>>(std::istream& ifs, MyString& myString)
 {

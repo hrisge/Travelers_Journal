@@ -1,12 +1,12 @@
 #pragma once
 #include "MyString.h"
 
-const size_t BASE_SIZE = 4;
+const unsigned BASE_SIZE = 4;
 
 class ArrayOfStrings
 {
-	size_t capacity = 0;
-	size_t size = 0;
+	unsigned capacity = 0;
+	unsigned size = 0;
 	MyString* array = nullptr;
 	
 	void free();
@@ -23,9 +23,11 @@ public:
 	ArrayOfStrings& operator=(const ArrayOfStrings&);
 	ArrayOfStrings& operator=(ArrayOfStrings&&);
 
+	const MyString& operator[](unsigned) const;
+
 	const MyString* getArray() const;
-	size_t getCapacity() const;
-	size_t getSize() const;
+	unsigned getCapacity() const;
+	unsigned getSize() const;
 
 	void addString(const MyString&);
 };

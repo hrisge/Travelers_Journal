@@ -1,13 +1,13 @@
 #pragma once
 #include "Data.h"
 
-const size_t START_CAPACITY = 16;
+const unsigned START_CAPACITY = 16;
 
 class UsersDataBase
 {
 	Data* dataBase;
-	size_t capacity;
-	size_t size;
+	unsigned capacity;
+	unsigned size;
 
 	void free();
 	void copyFrom(const UsersDataBase&);
@@ -22,11 +22,11 @@ public:
 	UsersDataBase& operator=(UsersDataBase&&);
 
 	const Data* getDataBase() const;
-	size_t getCapacity() const;
-	size_t getSize() const;
+	unsigned getCapacity() const;
+	unsigned getSize() const;
 
 	void addData(const Data&);
-	void deleteData(size_t);
+	void deleteData(unsigned);
 	
 	void resize();
 };

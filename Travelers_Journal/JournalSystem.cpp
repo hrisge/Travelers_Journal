@@ -12,7 +12,7 @@ void JournalSystem::copyFrom(const JournalSystem& journalSystem)
 {
 	users = new User[journalSystem.getCapacity()];
 	
-	for (size_t i = 0; i < journalSystem.getSize(); ++i)
+	for (unsigned i = 0; i < journalSystem.getSize(); ++i)
 		users[i] = journalSystem.users[i];
 
 	size = journalSystem.getSize();
@@ -24,7 +24,7 @@ void JournalSystem::copyFrom(const JournalSystem& journalSystem)
 void JournalSystem::loadUsersData()
 {
 	MyString ext = ".db";
-	for (size_t i = 0; i < getSize(); ++i)
+	for (unsigned i = 0; i < getSize(); ++i)
 	{
 		MyString fileName = users[i].getUsername();
 		fileName.concat(ext);
@@ -39,10 +39,10 @@ void JournalSystem::loadUsersData()
 		inputFile.close();
 	}
 }
-void JournalSystem::saveUsersData(size_t index)
+void JournalSystem::saveUsersData(unsigned index) const
 {
 	MyString ext = ".db";
-	MyString fileName = getUsers()[index].getUsername();
+	MyString fileName(getUsers()[index].getUsername());
 	fileName.concat(ext);
 
 	std::ofstream outputFile(fileName.getString(), std::ios::out | std::ios::trunc);
@@ -50,25 +50,38 @@ void JournalSystem::saveUsersData(size_t index)
 	if (!outputFile.is_open())
 		return;
 
-	for (size_t i = 0; i < getUsers()[index].getUsersDataBase().getSize(); ++i)
+	for (unsigned i = 0; i < getUsers()[index].getUsersDataBase().getSize(); ++i)
 	{
-		outputFile << getUsers()[index].getUsersDataBase().getDataBase()[i].getDestination() << '$' <<
-			getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getYear() << '-' <<
-			getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getMonth() << '-' <<
-			getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getDay() << ' ' <<
-			getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getYear() << '-' <<
-			getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getMonth() << '-' <<
-			getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getDay() << '$' <<
-			getUsers()[index].getUsersDataBase().getDataBase()[i].getGrade() <<
-			getUsers()[index].getUsersDataBase().getDataBase()[i].getComment() << '$';
-		for (size_t k = 0; k <= (int)getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getSize()-1; ++k)
+		if (i != 0)
+			outputFile <<'\n'<< getUsers()[index].getUsersDataBase().getDataBase()[i].getDestination() << '$' <<
+				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getYear() << '-' <<
+				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getMonth() << '-' <<
+				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getDay() << ' ' <<
+				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getYear() << '-' <<
+				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getMonth() << '-' <<
+				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getDay() << '$' <<
+				getUsers()[index].getUsersDataBase().getDataBase()[i].getGrade() <<
+				getUsers()[index].getUsersDataBase().getDataBase()[i].getComment() << '$';
+		else
+			outputFile << getUsers()[index].getUsersDataBase().getDataBase()[i].getDestination() << '$' <<
+				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getYear() << '-' <<
+				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getMonth() << '-' <<
+				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getDay() << ' ' <<
+				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getYear() << '-' <<
+				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getMonth() << '-' <<
+				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getDay() << '$' <<
+				getUsers()[index].getUsersDataBase().getDataBase()[i].getGrade() <<
+				getUsers()[index].getUsersDataBase().getDataBase()[i].getComment() << '$';
+		for (unsigned k = 0; k <= getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getSize()-1; ++k)
 		{
 			outputFile << getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getArray()[k].getString()<<'#';
 		}
-		outputFile << getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getArray()[getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getSize() - 1].getString() << '\n';
+		outputFile << getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getArray()[getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getSize() - 1].getString();
 	}
+
+	outputFile.close();
 }
-void JournalSystem::addUserData(std::ifstream& inputFile, size_t index)
+void JournalSystem::addUserData(std::ifstream& inputFile, unsigned index)
 {
 	char buffDest[MAX_BUFF_SIZE];
 
@@ -116,7 +129,7 @@ void JournalSystem::resize()
 	if (capacity == 0)
 		capacity = 4;
 	User* buff = new User[getCapacity()];
-	for (size_t i = 0; i < getSize(); ++i)
+	for (unsigned i = 0; i < getSize(); ++i)
 		buff[i] = users[i];
 	delete[] users;
 	users = buff;
@@ -188,15 +201,15 @@ const User* JournalSystem::getUsers() const
 {
 	return users;
 }
-size_t JournalSystem::getSize() const
+unsigned JournalSystem::getSize() const
 {
 	return size;
 }
-size_t JournalSystem::getCapacity() const
+unsigned JournalSystem::getCapacity() const
 {
 	return capacity;
 }
-size_t JournalSystem::getLoggedIn() const
+unsigned JournalSystem::getLoggedIn() const
 {
 	return loggedIn;
 }
@@ -213,23 +226,28 @@ void JournalSystem::addUser(const User& user)
 	users[getSize()] = user;
 	++size;
 }
-void JournalSystem::save()
+void JournalSystem::save() const
 {
 	std::ofstream outFile(usersFile, std::ios::trunc);
 
 	if (!outFile.is_open())
 		return;
 
-	for (size_t i = 0; i < getSize(); ++i)
+	for (unsigned i = 0; i < getSize(); ++i)
 	{
-		outFile << getUsers()[i].getUsername() << '$' << getUsers()[i].getPassword() << '$' << getUsers()[i].getEmail();
+		if (i == getSize() - 1)
+			outFile << getUsers()[i].getUsername() << '$' << getUsers()[i].getPassword() << '$' << getUsers()[i].getEmail().getUser() <<
+			'@' << getUsers()[i].getEmail().getHost() << '.' << getUsers()[i].getEmail().getAdress();
+		else
+			outFile << getUsers()[i].getUsername() << '$' << getUsers()[i].getPassword() << '$' << getUsers()[i].getEmail();
+		
 		saveUsersData(i);
 	}
 	outFile.close();
 }
 
 void JournalSystem::addAJourney(const MyString& destination, const CalendarTime& arrTime, const CalendarTime& depTime, 
-	size_t grade, const MyString& comment, const ArrayOfStrings& photos)
+	unsigned grade, const MyString& comment, const ArrayOfStrings& photos)
 {
 	Data buff;
 	buff.setDestination(destination);
@@ -251,7 +269,7 @@ void JournalSystem::logOut()
 
 bool JournalSystem::checkLogIn(MyString& username, MyString& password)
 {
-	for (size_t i = 0; i < getSize(); i++)
+	for (unsigned i = 0; i < getSize(); i++)
 	{
 		if (getUsers()[i].getUsername() == username)
 		{
@@ -262,15 +280,14 @@ bool JournalSystem::checkLogIn(MyString& username, MyString& password)
 
 				return true;
 			}
-
 		}
 	}
 	return false;
 }
 
-bool JournalSystem::checkUser(MyString& username)
+bool JournalSystem::checkUser(MyString& username) const
 {
-	for (size_t i = 0; i < getSize(); i++)
+	for (unsigned i = 0; i < getSize(); i++)
 		if (getUsers()[i].getUsername() == username)
 			return false;
 

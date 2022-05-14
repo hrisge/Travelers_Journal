@@ -10,38 +10,24 @@ void system()
 		std::cout << "Please enter a command. If you need help enter help. Command: ";
 		std::cin >> command;
 		if (command == "log in")
-		{
 			logIn(journalSystem);
-		}
 		else if (command == "register")
-		{
 			registerNewUser(journalSystem);
-		}
 		else if (command == "add a new trip")
-		{
 			addNewTrip(journalSystem);
-		}
 		else if (command == "view trips")
-		{
 			viewTrips(journalSystem);
-		}
 		else if (command == "average grade")
-		{
 			viewDestinationAverageGrade(journalSystem);
-		}
 		else if (command == "log out")
-		{
 			logOut(journalSystem);
-		}
 		else if (command == "exit")
 		{
 			exit(journalSystem);
 			return;
 		}
 		else if (command == "help")
-		{
 			help(journalSystem);
-		}
 		else
 		{
 			std::cout << "You have entered invalid command. Check help!" << std::endl;
@@ -110,8 +96,6 @@ void registerNewUser(JournalSystem& journalSystem)
 	}
 
 	std::cout << "\nThere is already such User! Try again! \n";
-
-
 }
 void addNewTrip(JournalSystem& journalSystem)
 {
@@ -166,7 +150,7 @@ void viewTrips(JournalSystem& journalSystem)
 		return;
 	}
 
-	size_t numberOfTrips = journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getSize();
+	unsigned numberOfTrips = journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getSize();
 
 	if (numberOfTrips == 0)
 	{
@@ -175,7 +159,7 @@ void viewTrips(JournalSystem& journalSystem)
 	}
 
 	std::cout << "Your journeys are: \n";
-	for (size_t i = 0; i < numberOfTrips; ++i)
+	for (unsigned i = 0; i < numberOfTrips; ++i)
 	{
 		std::cout << "Journey Number " << i << "\nDestination:" <<
 			journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getDataBase()[i].getDestination() << "\nTime Period: " <<
@@ -201,12 +185,12 @@ void viewDestinationAverageGrade(JournalSystem& journalSystem)
 	MyString destination;
 	std::cin >> destination;
 
-	size_t numberOfTimesVisited = 0;
+	unsigned numberOfTimesVisited = 0;
 	double gradeSum = 0;
 	double average = 0;
-	for (size_t i = 0; i < journalSystem.getSize(); ++i)
+	for (unsigned i = 0; i < journalSystem.getSize(); ++i)
 	{
-		for(size_t k=0;k<journalSystem.getUsers()[i].getUsersDataBase().getSize();++k)
+		for(unsigned k=0;k<journalSystem.getUsers()[i].getUsersDataBase().getSize();++k)
 			if (journalSystem.getUsers()[i].getUsersDataBase().getDataBase()[k].getDestination() == destination)
 			{
 				gradeSum += journalSystem.getUsers()[i].getUsersDataBase().getDataBase()[k].getGrade();
