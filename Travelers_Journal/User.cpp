@@ -77,3 +77,8 @@ void User::addData(const Data& data)
 	usersDataBase.addData(data);
 }
 
+void User::loadData(std::ifstream& inputTripFile)
+{
+	usersDataBase.loadData(inputTripFile);
+}
+

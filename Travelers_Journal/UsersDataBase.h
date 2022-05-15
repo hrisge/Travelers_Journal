@@ -2,6 +2,7 @@
 #include "Data.h"
 
 const unsigned START_CAPACITY = 16;
+const unsigned MAX_BUFF_SIZE = 128;
 
 class UsersDataBase
 {
@@ -27,6 +28,7 @@ public:
 
 	void addData(const Data&);
 	void deleteData(unsigned);
+	void loadData(std::ifstream&);
 	
 	void resize();
 };

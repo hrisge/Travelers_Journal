@@ -3,7 +3,6 @@
 #include "User.h"
 
 const char usersFile[16] = "usersList.db";
-const unsigned MAX_BUFF_SIZE = 128;
 const unsigned MAX_BUFF2 = 8;
 
 class JournalSystem
@@ -21,6 +20,8 @@ class JournalSystem
 	void saveUsersData(unsigned) const;
 	void addUserData(std::ifstream&, unsigned);
 	void resize();
+
+	void saveUsers(std::ofstream&, unsigned, unsigned) const;
 
 public:
 	JournalSystem();

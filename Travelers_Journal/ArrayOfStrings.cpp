@@ -99,7 +99,7 @@ unsigned ArrayOfStrings::getSize() const
 
 void ArrayOfStrings::addString(const MyString& str)
 {
-	if ((getCapacity() == 0) || (getCapacity() == getSize()))
+	while ((getCapacity() == 0) || (getCapacity() == getSize()))
 		resize();
 
 	array[getSize()] = str;

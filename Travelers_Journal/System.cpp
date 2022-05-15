@@ -7,7 +7,7 @@ void system()
 	while (true)
 	{
 		MyString command;
-		std::cout << "Please enter a command. If you need help enter help. Command: ";
+		std::cout << "\nPlease enter a command. If you need help enter help. Command: ";
 		std::cin >> command;
 		if (command == "log in")
 			logIn(journalSystem);
@@ -161,15 +161,15 @@ void viewTrips(JournalSystem& journalSystem)
 	std::cout << "Your journeys are: \n";
 	for (unsigned i = 0; i < numberOfTrips; ++i)
 	{
-		std::cout << "Journey Number " << i << "\nDestination:" <<
+		std::cout << "Journey Number " << i+1 << "\nDestination:" <<
 			journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getDataBase()[i].getDestination() << "\nTime Period: " <<
 			journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getDataBase()[i].getTimeArrival() << " " <<
 			journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getDataBase()[i].getTimeDeparture() << "\nGrade: " <<
 			journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getDataBase()[i].getGrade() << "\nComment: " <<
 			journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getDataBase()[i].getComment() << "\nPhotos: ";
-		for (size_t k = 0; k < journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getDataBase()[i].getPhotos().getSize(); ++i)
+		for (size_t k = 0; k < journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getDataBase()[i].getPhotos().getSize(); ++k)
 			std::cout << journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getDataBase()[i].getPhotos().getArray()[k] << " ";
-		std::cout << std::endl;
+		std::cout << std::endl << std::endl;
 	}
 }
 void viewDestinationAverageGrade(JournalSystem& journalSystem)
@@ -190,12 +190,27 @@ void viewDestinationAverageGrade(JournalSystem& journalSystem)
 	double average = 0;
 	for (unsigned i = 0; i < journalSystem.getSize(); ++i)
 	{
-		for(unsigned k=0;k<journalSystem.getUsers()[i].getUsersDataBase().getSize();++k)
-			if (journalSystem.getUsers()[i].getUsersDataBase().getDataBase()[k].getDestination() == destination)
+		for (unsigned k = 0; k < journalSystem.getUsers()[i].getUsersDataBase().getSize(); ++k)
+		{
+			if (journalSystem.getUsers()[i].getUsersDataBase().getDataBase()[k].getDestination()[0] == '\n')
+			{
+				MyString buff;
+				unsigned stringLen = journalSystem.getUsers()[i].getUsersDataBase().getDataBase()[k].getDestination().getStringLen();
+				for (unsigned l = 1; l < stringLen; ++l)
+					buff.concatChar(journalSystem.getUsers()[i].getUsersDataBase().getDataBase()[k].getDestination()[l]);
+
+				if (buff == destination)
+				{
+					gradeSum += journalSystem.getUsers()[i].getUsersDataBase().getDataBase()[k].getGrade();
+					++numberOfTimesVisited;
+				}
+			}
+			else if (journalSystem.getUsers()[i].getUsersDataBase().getDataBase()[k].getDestination() == destination)
 			{
 				gradeSum += journalSystem.getUsers()[i].getUsersDataBase().getDataBase()[k].getGrade();
 				++numberOfTimesVisited;
 			}
+		}
 	}
 	average = gradeSum / numberOfTimesVisited;
 	std::cout << destination << "'s average grade is " << average;

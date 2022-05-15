@@ -142,7 +142,7 @@ void MyString::copyString(const MyString& other, unsigned numberOfChars)
 }
 void MyString::copyString(const char* str, unsigned numberOfChars)
 {
-	if ((numberOfChars >= getCapacity() - 1) || (getCapacity() == 0))
+	while ((numberOfChars >= getCapacity() - 1) || (getCapacity() == 0))
 		resize();
 
 	unsigned cnt = numberOfChars - 1;

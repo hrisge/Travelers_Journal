@@ -98,6 +98,53 @@ void UsersDataBase::deleteData(unsigned n)
 	--size;
 }
 
+void UsersDataBase::loadData(std::ifstream& inputTripFile)
+{
+	while (!inputTripFile.eof())
+	{
+		char buffDestination[MAX_BUFF_SIZE];
+		char buffYA[MAX_NUMBER_LEN];
+		char buffMA[MAX_NUMBER_LEN];
+		char buffDA[MAX_NUMBER_LEN];
+		char buffYD[MAX_NUMBER_LEN];
+		char buffMD[MAX_NUMBER_LEN];
+		char buffDD[MAX_NUMBER_LEN];
+		char buffGrade;
+		char buffComment[MAX_BUFF3];
+		ArrayOfStrings buffImages;
+
+		inputTripFile.getline(buffDestination, MAX_BUFF_SIZE, '$');
+		
+		inputTripFile.getline(buffYA, MAX_NUMBER_LEN, '-');
+		inputTripFile.getline(buffMA, MAX_NUMBER_LEN, '-');
+		inputTripFile.getline(buffDA, MAX_NUMBER_LEN, ' ');
+		
+		inputTripFile.getline(buffYD, MAX_NUMBER_LEN, '-');
+		inputTripFile.getline(buffMD, MAX_NUMBER_LEN, '-');
+		inputTripFile.getline(buffDD, MAX_NUMBER_LEN, '$');
+
+		inputTripFile.get(buffGrade);
+		inputTripFile.getline(buffComment, MAX_BUFF3, '$');
+		
+		while ((inputTripFile.peek() != '\n') && (!inputTripFile.eof()))
+		{
+			char buffImage[MAX_BUFF_SIZE];
+			inputTripFile.getline(buffImage, MAX_BUFF_SIZE, '#');
+			buffImages.addString(buffImage);
+		}
+
+		Data buff;
+		buff.setDestination(buffDestination);
+		buff.setTimeArr(convertCharToInt(buffDA), convertCharToInt(buffMA), convertCharToInt(buffYA));
+		buff.setTimeDep(convertCharToInt(buffDD), convertCharToInt(buffMD), convertCharToInt(buffYD));
+		buff.setGrade(buffGrade - '0');
+		buff.setComment(buffComment);
+		buff.setPhotos(buffImages);
+
+		addData(buff);
+	}
+}
+
 void UsersDataBase::resize()
 {
 	unsigned newCapacity = getCapacity() * 2;

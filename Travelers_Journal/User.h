@@ -27,6 +27,7 @@ public:
 	void setPasword(const MyString&);
 	
 	void addData(const Data&);
+	void loadData(std::ifstream&);
 
 	//friend std::istream& operator>>(std::istream&, User&);
 	//friend std::ostream& operator<<(std::ostream&, User&);

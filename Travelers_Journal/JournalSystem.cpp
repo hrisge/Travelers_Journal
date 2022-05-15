@@ -52,31 +52,11 @@ void JournalSystem::saveUsersData(unsigned index) const
 
 	for (unsigned i = 0; i < getUsers()[index].getUsersDataBase().getSize(); ++i)
 	{
-		if (i != 0)
-			outputFile <<'\n'<< getUsers()[index].getUsersDataBase().getDataBase()[i].getDestination() << '$' <<
-				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getYear() << '-' <<
-				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getMonth() << '-' <<
-				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getDay() << ' ' <<
-				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getYear() << '-' <<
-				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getMonth() << '-' <<
-				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getDay() << '$' <<
-				getUsers()[index].getUsersDataBase().getDataBase()[i].getGrade() <<
-				getUsers()[index].getUsersDataBase().getDataBase()[i].getComment() << '$';
-		else
-			outputFile << getUsers()[index].getUsersDataBase().getDataBase()[i].getDestination() << '$' <<
-				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getYear() << '-' <<
-				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getMonth() << '-' <<
-				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getDay() << ' ' <<
-				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getYear() << '-' <<
-				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getMonth() << '-' <<
-				getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getDay() << '$' <<
-				getUsers()[index].getUsersDataBase().getDataBase()[i].getGrade() <<
-				getUsers()[index].getUsersDataBase().getDataBase()[i].getComment() << '$';
-		for (unsigned k = 0; k <= getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getSize()-1; ++k)
-		{
+		saveUsers(outputFile, index, i);
+		
+		for (int k = 0; k < getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getSize(); ++k)
 			outputFile << getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getArray()[k].getString()<<'#';
-		}
-		outputFile << getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getArray()[getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getSize() - 1].getString();
+		//outputFile << getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getArray()[getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getSize() - 1].getString();
 	}
 
 	outputFile.close();
@@ -135,6 +115,19 @@ void JournalSystem::resize()
 	users = buff;
 }
 
+void JournalSystem::saveUsers(std::ofstream& outputFile, unsigned index, unsigned i) const
+{
+	outputFile << getUsers()[index].getUsersDataBase().getDataBase()[i].getDestination() << '$' <<
+		getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getYear() << '-' <<
+		getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getMonth() << '-' <<
+		getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival().getDay() << ' ' <<
+		getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getYear() << '-' <<
+		getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getMonth() << '-' <<
+		getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture().getDay() << '$' <<
+		getUsers()[index].getUsersDataBase().getDataBase()[i].getGrade() <<
+		getUsers()[index].getUsersDataBase().getDataBase()[i].getComment() << '$';
+}
+
 JournalSystem::JournalSystem()
 {
 	std::ifstream inputFile(usersFile);
@@ -168,6 +161,15 @@ JournalSystem::JournalSystem()
 		users[getSize()].setUsername(buffUsername);
 		users[getSize()].setPassword(buffPassword);
 		users[getSize()].setEmail(buffEmail1, buffEmail2, buffEmail3);
+
+		MyString inputFileTripsFileName = buffUsername;
+		inputFileTripsFileName.concat(".db");
+
+		std::ifstream inputFileTrips(inputFileTripsFileName.getString());
+		if (!inputFileTrips.is_open())
+			continue;
+
+		users[getSize()].loadData(inputFileTrips);
 
 		++size;
 	}
@@ -233,16 +235,18 @@ void JournalSystem::save() const
 	if (!outFile.is_open())
 		return;
 
-	for (unsigned i = 0; i < getSize(); ++i)
+	unsigned size = getSize() - 1;
+	for (unsigned i = 0; i < size; ++i)
 	{
-		if (i == getSize() - 1)
-			outFile << getUsers()[i].getUsername() << '$' << getUsers()[i].getPassword() << '$' << getUsers()[i].getEmail().getUser() <<
-			'@' << getUsers()[i].getEmail().getHost() << '.' << getUsers()[i].getEmail().getAdress();
-		else
-			outFile << getUsers()[i].getUsername() << '$' << getUsers()[i].getPassword() << '$' << getUsers()[i].getEmail();
+		outFile << getUsers()[i].getUsername() << '$' << getUsers()[i].getPassword() << '$' << getUsers()[i].getEmail();
 		
 		saveUsersData(i);
 	}
+
+	outFile << getUsers()[size].getUsername() << '$' << getUsers()[size].getPassword() << '$' << getUsers()[size].getEmail().getUser() <<
+		'@' << getUsers()[size].getEmail().getHost() << '.' << getUsers()[size].getEmail().getAdress();
+	saveUsersData(size);
+
 	outFile.close();
 }
 
@@ -257,7 +261,8 @@ void JournalSystem::addAJourney(const MyString& destination, const CalendarTime&
 	buff.setComment(comment);
 	buff.setPhotos(photos);
 
-	users[getLoggedIn()].addData(buff);
+	if (buff.getCorrectData())
+		users[getLoggedIn()].addData(buff);
 }
 
 void JournalSystem::logOut()

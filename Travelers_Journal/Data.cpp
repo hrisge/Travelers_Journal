@@ -46,12 +46,22 @@ void Data::setTimeDep(const CalendarTime& time)
 {
 	if (getTimeArrival() <= time)
 		timeDeparture = time;
+	else
+	{
+		std::cout << "\nYou have entered invalid Time. Journey will not be saved. Try again!";
+		correctData = false;
+	}
 }
 void Data::setTimeDep(unsigned day, unsigned month, unsigned year)
 {
 	CalendarTime buff(day, month, year);
 	if (getTimeArrival() <= buff)
 		timeDeparture = buff;
+	else
+	{
+		std::cout << "\nYou have entered invalid Time. Journey will not be saved. Try again!";
+		correctData = false;
+	}
 }
 void Data::setTimeArr(const CalendarTime& time)
 {
@@ -60,14 +70,20 @@ void Data::setTimeArr(const CalendarTime& time)
 void Data::setTimeArr(unsigned day, unsigned month, unsigned year)
 {
 	CalendarTime buff(day, month, year);
-	if (buff <= getTimeDeparture())
-		timeArival = buff;
+	timeArival = buff;
 }
 void Data::setPhotos(const ArrayOfStrings& photos)
 {
 	for (unsigned i = 0; i < photos.getSize(); ++i)
+	{
 		if (isValidPhoto(photos.getArray()[i]))
 			this->photos.addString(photos.getArray()[i]);
+		else
+		{
+			std::cout << "\nYou have entered invalid Photo. Journey will not be saved. Try again!";
+			correctData = false;
+		}
+	}
 }
 void Data::setPhotosFromList(const char* photosList)
 {
@@ -85,7 +101,7 @@ void Data::setComment(const MyString& comment)
 {
 	this->comment = comment;
 }
-void Data::setComment(const char* comments)
+void Data::setComment(const char* comment)
 {
 	this->comment = comment;
 }
@@ -94,7 +110,15 @@ void Data::setGrade(unsigned grade)
 	if (grade > 1 && grade < 6)
 		this->grade = grade;
 	else
+	{
+		std::cout << "\nYou have entered invalid Grade. Journey will not be saved. Try again!";
 		this->grade = 0;
+	}
+}
+
+bool Data::getCorrectData() const
+{
+	return correctData;
 }
 
 const CalendarTime& Data::getTimeArrival() const

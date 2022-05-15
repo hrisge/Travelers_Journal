@@ -12,6 +12,8 @@ class Data
 	MyString comment;
 	unsigned grade;
 
+	bool correctData = true;
+
 	void convertPhotoListToArrayOfStrings(const char*);
 	unsigned numberOfPhotosInList(const char*);
 	bool isValidPhoto(const MyString&) const;
@@ -29,6 +31,7 @@ public:
 	void setComment(const char*);
 	void setGrade(unsigned);
 
+	bool getCorrectData() const;
 	const CalendarTime& getTimeArrival() const;
 	const CalendarTime& getTimeDeparture() const;
 	const ArrayOfStrings& getPhotos() const;
