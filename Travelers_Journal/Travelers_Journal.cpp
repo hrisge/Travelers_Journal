@@ -10,6 +10,4 @@
 int main()
 {
     system();
-    
-    std::cout << "Hello World!\n";
 }

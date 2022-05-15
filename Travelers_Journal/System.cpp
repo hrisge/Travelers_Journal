@@ -19,6 +19,8 @@ void system()
 			viewTrips(journalSystem);
 		else if (command == "average grade")
 			viewDestinationAverageGrade(journalSystem);
+		else if (command == "search by destination")
+			searchByDestination(journalSystem);
 		else if (command == "log out")
 			logOut(journalSystem);
 		else if (command == "exit")
@@ -141,7 +143,7 @@ void addNewTrip(JournalSystem& journalSystem)
 
 	journalSystem.addAJourney(destination, arrTime, depTime, grade, comment, photos);
 }
-void viewTrips(JournalSystem& journalSystem)
+void viewTrips(const JournalSystem& journalSystem)
 {
 	system("CLS");
 	if (!journalSystem.getIsLoggedIn())
@@ -161,18 +163,11 @@ void viewTrips(JournalSystem& journalSystem)
 	std::cout << "Your journeys are: \n";
 	for (unsigned i = 0; i < numberOfTrips; ++i)
 	{
-		std::cout << "Journey Number " << i+1 << "\nDestination:" <<
-			journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getDataBase()[i].getDestination() << "\nTime Period: " <<
-			journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getDataBase()[i].getTimeArrival() << " " <<
-			journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getDataBase()[i].getTimeDeparture() << "\nGrade: " <<
-			journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getDataBase()[i].getGrade() << "\nComment: " <<
-			journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getDataBase()[i].getComment() << "\nPhotos: ";
-		for (size_t k = 0; k < journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getDataBase()[i].getPhotos().getSize(); ++k)
-			std::cout << journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getDataBase()[i].getPhotos().getArray()[k] << " ";
-		std::cout << std::endl << std::endl;
+		std::cout << "Journey Number " << i + 1 << "\nDestination:" << journalSystem.getUsers()[journalSystem.getLoggedIn()].getUsersDataBase().getDataBase()[i].getDestination();
+		printJourneyInfo(journalSystem, journalSystem.getLoggedIn(), i);
 	}
 }
-void viewDestinationAverageGrade(JournalSystem& journalSystem)
+void viewDestinationAverageGrade(const JournalSystem& journalSystem)
 {
 	system("CLS");
 	if (!journalSystem.getIsLoggedIn())
@@ -223,6 +218,67 @@ void logOut(JournalSystem& journalSystem)
 {
 	journalSystem.logOut();
 }
+void searchByDestination(const JournalSystem& journalSystem)
+{
+	system("CLS");
+
+	if (!journalSystem.getIsLoggedIn())
+	{
+		std::cout << "\nYou are not logged in! \n";
+		return;
+	}
+
+	std::cout << "Enter the destination you want to check: ";
+	MyString destination;
+	std::cin >> destination;
+
+	unsigned numberOfTimesVisited = 0;
+	double gradeSum = 0;
+	double average = 0;
+
+	for (unsigned i = 0; i < journalSystem.getSize(); ++i)
+	{
+		for (unsigned j = 0; j < journalSystem.getUsers()[i].getUsersDataBase().getSize(); ++j)
+		{
+			if (journalSystem.getUsers()[i].getUsersDataBase().getDataBase()[j].getDestination()[0] == '\n')
+			{
+				MyString buff;
+				unsigned stringLen = journalSystem.getUsers()[i].getUsersDataBase().getDataBase()[j].getDestination().getStringLen();
+				for (unsigned l = 1; l < stringLen; ++l)
+					buff.concatChar(journalSystem.getUsers()[i].getUsersDataBase().getDataBase()[j].getDestination()[l]);
+
+				if (buff == destination)
+				{
+					std::cout << std::endl << "Trip number " << numberOfTimesVisited + 1 << std::endl;
+					printJourneyInfo(journalSystem, i, j);
+					gradeSum += journalSystem.getUsers()[i].getUsersDataBase().getDataBase()[j].getGrade();
+					++numberOfTimesVisited;
+				}
+			}
+			else if (journalSystem.getUsers()[i].getUsersDataBase().getDataBase()[j].getDestination() == destination)
+			{
+				std::cout << std::endl << "Trip number " << numberOfTimesVisited + 1 << std::endl;
+				printJourneyInfo(journalSystem, i, j);
+				gradeSum += journalSystem.getUsers()[i].getUsersDataBase().getDataBase()[j].getGrade();
+				++numberOfTimesVisited;
+			}
+		}
+	}
+	average = gradeSum / numberOfTimesVisited;
+	std::cout << destination << "'s average grade is " << average;
+}
+
+void printJourneyInfo(const JournalSystem& journalSystem, unsigned index, unsigned i)
+{
+	std::cout<< "\nTime Period: " <<
+		journalSystem.getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeArrival() << " " <<
+		journalSystem.getUsers()[index].getUsersDataBase().getDataBase()[i].getTimeDeparture() << "\nGrade: " <<
+		journalSystem.getUsers()[index].getUsersDataBase().getDataBase()[i].getGrade() << "\nComment: " <<
+		journalSystem.getUsers()[index].getUsersDataBase().getDataBase()[i].getComment() << "\nPhotos: ";
+	for (size_t k = 0; k < journalSystem.getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getSize(); ++k)
+		std::cout << journalSystem.getUsers()[index].getUsersDataBase().getDataBase()[i].getPhotos().getArray()[k] << " ";
+	std::cout << std::endl << std::endl;
+}
 
 void help(JournalSystem& journalSystem)
 {
@@ -234,6 +290,7 @@ void help(JournalSystem& journalSystem)
 		std::cout << "If you want to add a new trip: add a new trip!" << std::endl;
 		std::cout << "If you want to view trips: view trips!" << std::endl;
 		std::cout << "If you want to view the average destination grade: average grade!" << std::endl;
+		std::cout << "If you want to see all the trips all users have made to a destination: search by destination!" << std::endl;
 		std::cout << "If you want to log out: log out!" << std::endl;
 		std::cout << "If you want to exit: exit!" << std::endl;
 	}
